@@ -97,9 +97,9 @@ function main_loop () {
     gl.useProgram (sp);
 
     parse_obj_into_vbos ( <?php echo $cow_obj; ?> );
-    M = scale(identity_mat4(), [0.01,0.01,0.01]);
+    M = scale (identity_mat4(), [0.01,0.01,0.01]);
     M = rotate_y_deg (M, angleInDegrees);
-    M = translate_mat4(M, [-1.0, 0.0, 5.0]);
+    M = translate_mat4 (M, [-1.0, 0.0, 5.0]);
     V = view_mat;
     P = perspective (45.0, 1.0, 0.1, 100.0);
     gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
@@ -108,7 +108,7 @@ function main_loop () {
     draw (tex2);
 
     parse_obj_into_vbos ( <?php echo $ground_obj; ?> );
-    M = identity_mat4 ();
+    M = scale (identity_mat4 (), [10,10,10]);
     V = view_mat;
     P = perspective (45.0, 1.0, 0.1, 100.0);
     gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
