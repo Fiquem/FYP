@@ -1,4 +1,6 @@
 var keys_down = {};
+var speed = 0.1;
+var x,y;
 
 function handleKeyDown(event) {
     keys_down[event.keyCode] = true;
@@ -6,7 +8,19 @@ function handleKeyDown(event) {
 
 function handleKeyUp(event) {
     keys_down[event.keyCode] = false;
-    //console.log(event.keyCode);
+    console.log(event.keyCode);
+}
+
+function handleMouseMovement(event) {
+    x = event.clientX;
+    y = event.clientY;
+    if (keys_down[16])
+    {
+        cam_orient = mult_quat_quat (quat_from_axis_deg ((x - last_x)*speed, up[0], up[1], up[2]), cam_orient);
+        cam_orient = mult_quat_quat (quat_from_axis_deg ((y - last_y)*speed, right[0], right[1], right[2]), cam_orient);
+    }
+    last_x = x;
+    last_y = y;
 }
 
 function handleKeys() {
@@ -19,20 +33,6 @@ function handleKeys() {
         move(cam_pos, forward, -1, 0.1);
     if (keys_down[68])
         move(cam_pos, right, 1, 0.1);
-
-    // IJKL - cam rotate
-    if (keys_down[73])
-	 cam_orient = mult_quat_quat (quat_from_axis_deg (-1, right[0], right[1], right[2]), cam_orient);
-    if (keys_down[74])
-	 cam_orient = mult_quat_quat (quat_from_axis_deg (-1, up[0], up[1], up[2]), cam_orient);
-    if (keys_down[75])
-	 cam_orient = mult_quat_quat (quat_from_axis_deg (1, right[0], right[1], right[2]), cam_orient);
-    if (keys_down[76])
-	 cam_orient = mult_quat_quat (quat_from_axis_deg (1, up[0], up[1], up[2]), cam_orient);
-    /*if (keys_down[79])
-	 cam_orient = mult_quat_quat (quat_from_axis_deg (-1, forward[0], forward[1], forward[2]), cam_orient);
-    if (keys_down[85])
-	 cam_orient = mult_quat_quat (quat_from_axis_deg (1, forward[0], forward[1], forward[2]), cam_orient);*/
 }
 
 function move (obj, axis, dir, speed) {
