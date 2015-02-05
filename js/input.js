@@ -16,9 +16,11 @@ function handleMouseMovement(event) {
     y = event.clientY;
     if (keys_down[16])
     {
-        cam_orient = mult_quat_quat (quat_from_axis_deg ((x - last_x)*speed, up[0], up[1], up[2]), cam_orient);
-        cam_orient = mult_quat_quat (quat_from_axis_deg ((y - last_y)*speed, right[0], right[1], right[2]), cam_orient);
+        yaw += (x - last_x)*speed;
+        pitch += (y - last_y)*speed;
     }
+    if (yaw > 360) yaw = 0;
+    if (pitch > 360) pitch = 0;
     last_x = x;
     last_y = y;
 }

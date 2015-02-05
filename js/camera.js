@@ -1,6 +1,4 @@
 // All the variables
-var cam_speed = 1.0; // 1 unit per second
-var cam_yaw_speed = 100.0; // 10 degrees per second
 var cam_pos = [0.0, 1.0, -1.0]; // don't start at zero, or we will be too close
 
 // Free camera thing
