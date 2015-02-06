@@ -18,7 +18,6 @@ function handleMouseMovement(event) {
     {
         yaw += (x - last_x)*speed;
         if ((pitch < 20 && (y - last_y) > 0) || (pitch > -20 && (y - last_y) < 0)) pitch += (y - last_y)*speed;
-        cam_orient = mult_quat_quat (quat_from_axis_deg ((x - last_x)*speed, up[0], up[1], up[2]), cam_orient);
     }
     if (yaw > 360) yaw = 0;
     last_x = x;

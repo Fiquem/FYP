@@ -10,15 +10,11 @@ var pitch = 0;
 var yaw = 180;
 
 function update_cam() {
-    axis = inverse_mat4 (quat_to_mat4 (cam_orient));
-    right = mult_mat4_mat4 (axis, [1.0, 0.0, 0.0, 0.0]);
-    forward = mult_mat4_mat4 (axis, [0.0, 0.0, -1.0, 0.0]);
+    // UH
+    forward = [Math.sin(ONE_DEG_IN_RAD*yaw),0,-Math.cos(ONE_DEG_IN_RAD*yaw)];
+    right = [Math.cos(ONE_DEG_IN_RAD*yaw),0,Math.sin(ONE_DEG_IN_RAD*yaw)];
 
-    // constrain camera
-    right[1] = 0.0;
-    forward[1] = 0.0;
-
-    // yaw * pitch * translation
+    // pitch * yaw * translation
     view_mat = mult_mat4_mat4 (
 	mult_mat4_mat4 (
 		rotate_x_deg (identity_mat4 (), pitch),
