@@ -6,20 +6,12 @@ var forward = [0,0,-1];
 var pitch = 0;
 var yaw = 180;
 
-// gravity?
-var gravity = -0.01;
-var player_speed = 0;
-
 function update_cam() {
     // they see me rollin' wait no they don't
     forward = [Math.sin(ONE_DEG_IN_RAD*yaw),0,-Math.cos(ONE_DEG_IN_RAD*yaw)];
     right = [Math.cos(ONE_DEG_IN_RAD*yaw),0,Math.sin(ONE_DEG_IN_RAD*yaw)];
 
-    // UH
-    cam_pos[1] += player_speed;
-    if (cam_pos[1] <= 1) {
-        player_speed = 0;
-    } else player_speed += gravity;
+    update_physics();
 
     // pitch * yaw * translation
     view_mat = mult_mat4_mat4 (
