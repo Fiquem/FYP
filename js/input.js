@@ -8,7 +8,7 @@ function handleKeyDown(event) {
 
 function handleKeyUp(event) {
     keys_down[event.keyCode] = false;
-    console.log(event.keyCode);
+    //console.log(event.keyCode);
 }
 
 function handleMouseMovement(event) {
@@ -34,6 +34,10 @@ function handleKeys() {
         move(cam_pos, forward, -1, 0.1);
     if (keys_down[68])
         move(cam_pos, right, 1, 0.1);
+
+    // SPACE - Jump!
+    if (keys_down[32])
+        if (cam_pos[1] <= 1) player_speed = 0.2;
 }
 
 function move (obj, axis, dir, speed) {
