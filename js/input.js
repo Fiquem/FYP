@@ -41,7 +41,7 @@ function handleKeys() {
 }
 
 function move (obj, axis, dir, speed) {
-	obj[0] += dir * axis[0] * speed;
-	obj[1] += dir * axis[1] * speed;
-	obj[2] += dir * axis[2] * speed;
+	if (((dir * axis[0] * speed) > 0 && move_right) || ((dir * axis[0] * speed) < 0 && move_left)) obj[0] += dir * axis[0] * speed;
+	if (((dir * axis[1] * speed) > 0 && move_up) || ((dir * axis[1] * speed) < 0 && move_down)) obj[1] += dir * axis[1] * speed;
+	if (((dir * axis[2] * speed) > 0 && move_forward) || ((dir * axis[2] * speed) < 0 && move_backward)) obj[2] += dir * axis[2] * speed;
 }

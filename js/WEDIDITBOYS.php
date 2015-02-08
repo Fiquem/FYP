@@ -11,7 +11,7 @@ $test_obj = json_encode($test_obj);
 $cow_obj = file_get_contents("../meshes/SPACECOW.obj");
 $cow_obj = explode("\n",$cow_obj);
 $cow_obj = json_encode($cow_obj);
-$ground_obj = file_get_contents("../meshes/ground.obj");
+$ground_obj = file_get_contents("../meshes/unit_ground.obj");
 $ground_obj = explode("\n",$ground_obj);
 $ground_obj = json_encode($ground_obj);
 
@@ -26,8 +26,8 @@ var tex, tex2;
 var img = "textures/ground.png";
 var img2 = "textures/Capture6.PNG";
 var canvas_left, canvas_right, canvas_top, canvas_bottom, last_x, last_y;
-var canvas_w = 800;
-var canvas_h = 800;
+var canvas_w = 700;
+var canvas_h = 700;
 
 function getShader(gl, script, type) {
     var shaderScript = script;
@@ -105,26 +105,37 @@ function main_loop () {
     update_cam();
 
     gl.useProgram (sp);
+    V = view_mat;
+    P = perspective (45.0, 1.0, 0.1, 100.0);
 
     parse_obj_into_vbos ( <?php echo $cow_obj; ?> );
     M = scale (identity_mat4(), [0.01,0.01,0.01]);
     M = rotate_y_deg (M, angleInDegrees);
     M = translate_mat4 (M, [-1.0, 0.0, 5.0]);
-    V = view_mat;
-    P = perspective (45.0, 1.0, 0.1, 100.0);
     gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
     gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
     gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
-    draw (tex2);
+    //draw (tex2);
+    //var cow = new Object(0.5,0.5,0.5,-1,0.5,5);
+    //collide(cow);
 
     parse_obj_into_vbos ( <?php echo $ground_obj; ?> );
-    M = scale (identity_mat4 (), [10,10,10]);
-    V = view_mat;
-    P = perspective (45.0, 1.0, 0.1, 100.0);
+    M = scale (identity_mat4 (), [10,10,10]); // 1,0.05,1 * 10
     gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
     gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
     gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
     draw (tex);
+    var groundground = new Object(10,0.5,10,0,0,0);
+
+    M = translate_mat4 (M, [5.0, 0.5, 5.0]);
+    gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
+    gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
+    gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
+    draw (tex);
+    var step = new Object(10,0.5,10,5,0.5,5);
+
+    collide(step);
+    collide(groundground);
 
     window.requestAnimationFrame (main_loop, canvas);
 }
