@@ -5,7 +5,7 @@ function WebSocketTest()
     {
         alert("WebSocket is supported by your Browser!");
         // Let us open a web socket
-        var ws = new WebSocket("ws://emma-fyp.netsoc.tcd.ie:9998/echo");
+        var ws = new WebSocket("ws://localhost:9998/echo");
         ws.onopen = function()
         {
             // Web Socket is connected, send data using send()
@@ -43,7 +43,7 @@ function writeToScreen(message)
 // Send Message!
 function SendMessage(message)
 {
-    var ws = new WebSocket("ws://emma-fyp.netsoc.tcd.ie:9998/echo");
+    var ws = new WebSocket("ws://emma-fyp.netsoc.tcd.ie:80");
     ws.onopen = function() {
         message_form = document.forms["message_form"];
         message = message_form.elements["message_to_send"].value;
