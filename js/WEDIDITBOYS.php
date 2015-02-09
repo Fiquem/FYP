@@ -28,6 +28,7 @@ var img2 = "textures/Capture6.PNG";
 var canvas_left, canvas_right, canvas_top, canvas_bottom, last_x, last_y;
 var canvas_w = 700;
 var canvas_h = 700;
+var obj_array = [];
 
 function getShader(gl, script, type) {
     var shaderScript = script;
@@ -125,17 +126,16 @@ function main_loop () {
     gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
     gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
     draw (tex);
-    var groundground = new Object(10,0.5,10,0,0,0);
+    obj_array[obj_array.length] = new Object(10,0.5,10,0,0,0);
 
     M = translate_mat4 (M, [5.0, 0.5, 5.0]);
     gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
     gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
     gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
     draw (tex);
-    var step = new Object(10,0.5,10,5,0.5,5);
+    obj_array[obj_array.length] = new Object(10,0.5,10,5,0.5,5);
 
-    collide(step);
-    collide(groundground);
+    collide_all();
 
     window.requestAnimationFrame (main_loop, canvas);
 }

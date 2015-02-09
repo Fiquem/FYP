@@ -37,7 +37,10 @@ function handleKeys() {
 
     // SPACE - Jump!
     if (keys_down[32])
-        if (cam_pos[1] <= 1) player_speed = 0.2;
+        if (!move_down) {
+            player_speed = 0.2;
+            move_down = true;
+        }
 }
 
 function move (obj, axis, dir, speed) {
