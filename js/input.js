@@ -17,7 +17,7 @@ function handleMouseMovement(event) {
     if (keys_down[16])
     {
         yaw += (x - last_x)*speed;
-        if ((pitch < 20 && (y - last_y) > 0) || (pitch > -20 && (y - last_y) < 0)) pitch += (y - last_y)*speed;
+        if ((pitch < 90 && (y - last_y) > 0) || (pitch > -90 && (y - last_y) < 0)) pitch += (y - last_y)*speed;
     }
     if (yaw > 360) yaw = 0;
     last_x = x;
@@ -38,8 +38,8 @@ function handleKeys() {
     // SPACE - Jump!
     if (keys_down[32])
         if (!move_down) {
-            player_speed = 0.2;
-            move_down = true;
+            player_speed_y = 0.2;
+            move_down = true; // This makes things not glitchy af!
         }
 }
 

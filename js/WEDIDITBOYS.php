@@ -8,9 +8,6 @@ $fs = str_replace("\n","",$fs);
 $test_obj = file_get_contents("../meshes/Test.obj");
 $test_obj = explode("\n",$test_obj);
 $test_obj = json_encode($test_obj);
-$cow_obj = file_get_contents("../meshes/SPACECOW.obj");
-$cow_obj = explode("\n",$cow_obj);
-$cow_obj = json_encode($cow_obj);
 $ground_obj = file_get_contents("../meshes/unit_ground.obj");
 $ground_obj = explode("\n",$ground_obj);
 $ground_obj = json_encode($ground_obj);
@@ -22,13 +19,18 @@ var sp;
 var canvas;
 var M, V, P;
 var M_loc, V_loc, P_loc;
-var tex, tex2;
-var img = "textures/ground.png";
-var img2 = "textures/Capture6.PNG";
+var tex, tex2, tex3;
+var img = "graphics/FYP/textures/ground.png";
+var img2 = "graphics/FYP/textures/Capture6.PNG";
+var img3 = "graphics/FYP/textures/jjmp.png";
 var canvas_left, canvas_right, canvas_top, canvas_bottom, last_x, last_y;
 var canvas_w = 700;
 var canvas_h = 700;
 var obj_array = [];
+var collision_planes = [];
+var player_points = [];
+var all_players = new Array();
+var myName = false;
 
 function getShader(gl, script, type) {
     var shaderScript = script;
@@ -64,6 +66,7 @@ function main() {
 
     tex = create_texture_from_file (img);
     tex2 = create_texture_from_file (img2);
+    tex3 = create_texture_from_file (img3);
 
     var fragmentShader = getShader(gl, "<?php echo $fs ?>", "frag");
     var vertexShader = getShader(gl, "<?php echo $vs ?>", "vert");
@@ -92,6 +95,8 @@ function main() {
     document.onkeyup = handleKeyUp;
     document.onmousemove = handleMouseMovement;
 
+    initialise_map_objs ();
+
     main_loop();
 }
 
@@ -107,35 +112,26 @@ function main_loop () {
 
     gl.useProgram (sp);
     V = view_mat;
-    P = perspective (45.0, 1.0, 0.1, 100.0);
-
-    parse_obj_into_vbos ( <?php echo $cow_obj; ?> );
-    M = scale (identity_mat4(), [0.01,0.01,0.01]);
-    M = rotate_y_deg (M, angleInDegrees);
-    M = translate_mat4 (M, [-1.0, 0.0, 5.0]);
-    gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
-    gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
-    gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
-    //draw (tex2);
-    //var cow = new Object(0.5,0.5,0.5,-1,0.5,5);
-    //collide(cow);
+    P = perspective (45.0, 1.0, 0.1, 200.0);
 
     parse_obj_into_vbos ( <?php echo $ground_obj; ?> );
-    M = scale (identity_mat4 (), [10,10,10]); // 1,0.05,1 * 10
+    M = scale (identity_mat4 (), [20,20,20]);
     gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
     gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
     gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
     draw (tex);
-    obj_array[obj_array.length] = new Object(10,0.5,10,0,0,0);
 
-    M = translate_mat4 (M, [5.0, 0.5, 5.0]);
+    M = translate_mat4 (M, [10.0, 3, 10.0]);
     gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
-    gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
-    gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
     draw (tex);
-    obj_array[obj_array.length] = new Object(10,0.5,10,5,0.5,5);
 
-    collide_all();
+    M = translate_mat4 (identity_mat4 (), [-1,1,1]);
+    gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
+    draw (tex3);
+
+    collide_all ();
+
+    draw_players (all_players, tex2);
 
     window.requestAnimationFrame (main_loop, canvas);
 }
@@ -157,4 +153,31 @@ function draw (texture) {
     gl.disableVertexAttribArray (0);
     gl.disableVertexAttribArray (1);
     gl.disableVertexAttribArray (2);
+}
+
+function draw_players (ps, texture) {
+    for (var x in ps){
+        if (ps.hasOwnProperty(x) && x != myName && x != "false"){
+            console.log(x + " - " + ps[x]);
+            gl.useProgram (sp);
+            //V = view_mat;
+            //P = perspective (45.0, 1.0, 0.1, 100.0);
+            M = scale (identity_mat4 (), [0.2,0.2,0.2]);
+            M = translate_mat4 (M, ps[x]);
+            parse_obj_into_vbos ( <?php echo $test_obj; ?> );
+            gl.uniformMatrix4fv (M_loc, gl.FALSE, new Float32Array (M));
+            gl.uniformMatrix4fv (V_loc, gl.FALSE, new Float32Array (V));
+            gl.uniformMatrix4fv (P_loc, gl.FALSE, new Float32Array (P));
+            draw (texture);
+        }
+    }
+}
+
+function initialise_map_objs () {
+    // cube
+    obj_array[obj_array.length] = new Plane(20,1,20,0,0,0);
+
+    // platforms
+    obj_array[obj_array.length] = new Plane(20,1,20,10,3,10);
+    obj_array[obj_array.length] = new Jump_Pad(1,0.05,1,-1,1,1,[0,0.5,0]);
 }
