@@ -14,6 +14,12 @@ function update_physics() {
         player_speed_y = 0;
         player_speed_z = 0;
     } else player_speed_y += gravity;
+
+    if (!move_up && player_speed_y > 0) player_speed_y = 0;
+    if (!move_left && player_speed_y < 0) player_speed_x = 0;
+    if (!move_right && player_speed_y > 0) player_speed_x = 0;
+    if (!move_forward && player_speed_z < 0) player_speed_z = 0;
+    if (!move_backward && player_speed_z > 0) player_speed_z = 0;
 }
 
 var move_right = true;

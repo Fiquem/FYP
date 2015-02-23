@@ -20,9 +20,9 @@ var canvas;
 var M, V, P;
 var M_loc, V_loc, P_loc;
 var tex, tex2, tex3;
-var img = "graphics/FYP/textures/ground.png";
-var img2 = "graphics/FYP/textures/Capture6.PNG";
-var img3 = "graphics/FYP/textures/jjmp.png";
+var img = "textures/ground.png";
+var img2 = "textures/Capture6.PNG";
+var img3 = "textures/jjmp.png";
 var canvas_left, canvas_right, canvas_top, canvas_bottom, last_x, last_y;
 var canvas_w = 700;
 var canvas_h = 700;
@@ -53,13 +53,6 @@ function getShader(gl, script, type) {
 
 function main() {
     canvas = document.getElementById("canvas01");
-    canvas_left = canvas.getBoundingClientRect().left;
-    canvas_right = canvas.getBoundingClientRect().right;
-    canvas_top = canvas.getBoundingClientRect().top;
-    canvas_bottom = canvas.getBoundingClientRect().bottom;
-    last_x = (canvas_left+canvas_right)/2
-    last_y = (canvas_top+canvas_bottom)/2
-
     gl = canvas.getContext("experimental-webgl");
     gl.viewportWidth = canvas.width;
     gl.viewportHeight = canvas.height;
@@ -93,7 +86,6 @@ function main() {
 
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
-    document.onmousemove = handleMouseMovement;
 
     initialise_map_objs ();
 
