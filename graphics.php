@@ -1,17 +1,6 @@
-<?php
-
-# This is the default homepage for new users' webspace.
-# You can delete it or change it to whatever you like.
-
-
-$subdomains = Explode(".", $_SERVER["SERVER_NAME"]);
-$username = $subdomains[0];
-
-
-?>
 <html>
 	<head>
-		<title>Emma '<?=$username?>' Carrigan</title>
+		<title>Emma 'fiquem' Carrigan</title>
 
 		<script type="text/javascript" src="js/ammo.js"></script>
 		<script type="text/javascript" src="js/three.min.js"></script>
